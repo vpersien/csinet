@@ -11,11 +11,10 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
-public class FirstSimPanel extends MyPanel {
+public class FirstSimPanel extends AbstractPanel {
 
 	private int blocksize = 4;
 	private final AbstractSim sim;
-	private final boolean record = true;
 	private final double stretch = 1.0/Math.E;
 	
 	private final String[] contextLabels = {"p","t","c","k","q","b","d","g","f","s","x","h","v","z","r","m","n","l","j","w"};
@@ -54,7 +53,7 @@ public class FirstSimPanel extends MyPanel {
 		int step = this.sim.getStep();
 		if (step % 1000 == 0) {
 			System.out.println(step);
-			if (this.record && (step < 10000 || step % 10000 == 0)) {
+			if (this.recording && (step < 10000 || step % 10000 == 0)) {
 				this.saveIMG();
 			}
 		}

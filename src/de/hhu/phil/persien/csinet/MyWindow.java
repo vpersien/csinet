@@ -11,16 +11,16 @@ import javax.swing.*;
 
 public class MyWindow extends JFrame {
 
-	private MyPanel board;
+	private AbstractPanel board;
 	private BufferedImage buffer;
 	private static int bwidth = 480;
 	private static int bheight = 320;
 	
 	public MyWindow() {
-		this(new MyPanel());
+		this(new AbstractPanel());
 	}
 	
-	public MyWindow(MyPanel board) {
+	public MyWindow(AbstractPanel board) {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setResizable(false);
 		this.board = board;
@@ -33,14 +33,14 @@ public class MyWindow extends JFrame {
 	 * Getters
 	 */
 	
-	public MyPanel getBoard() { return this.board; }
+	public AbstractPanel getBoard() { return this.board; }
 	public BufferedImage getBuffer() { return this.board.getBuffer(); }
 	
 	/*
 	 * Setters
 	 */
 	
-	public void setBoard(MyPanel board) {
+	public void setBoard(AbstractPanel board) {
 		this.getContentPane().remove(this.board);
 		this.board = board;
 		this.getContentPane().add(this.board);

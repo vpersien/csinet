@@ -11,17 +11,11 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
-public class ContextSimPanel extends MyPanel {
+public class ContextSimPanel extends AbstractPanel {
 
 	private int blocksize = 4;
 	private final AbstractSim sim;
-	private final boolean record = false;
 	private final double stretch = 1.0/Math.E;
-	
-//	private final String[] contextLabels = {"p","t","c","k","q","b","d","g","f","s","x","h","v","z","r","m","n","l","j","w"};
-//	private final String[] labelLabels = {"i","u","e","o","a","y"};
-	private final String[] contextLabels = Constants.CONTEXTLABELS;
-	private final String[] labelLabels = Constants.LABELLABELS;
 	
 	Agent agent;
 	
@@ -40,54 +34,14 @@ public class ContextSimPanel extends MyPanel {
 	
 	@Override
 	public void update() {
-//		System.out.printf("%d: %d\n",this.sim.getStep(),this.agent.getExemplars().size());
-//		if (!(this.sim.getStep() % 1000 == 0)) return;
-//		this.graphics.setColor(Color.WHITE);
-//		this.graphics.drawRect(0, 0, this.width, this.height);
 		this.graphics.clearRect(0, 0, this.width, this.height);
 
-//		Collection<Vector> exemplars = this.agent.getExemplars();
-//		for (Vector exemplar : exemplars) {
-//			this.graphics.setColor(this.assignColor(exemplar));
-//			int x = (int) (exemplar.getX()*this.blocksize);
-//			int y = (int) (exemplar.getY()*this.blocksize);
-//			this.graphics.drawRect(x, y, this.blocksize, this.blocksize);
-//		}
-		
-//		int labels = this.agent.getLabelNum();
-//		for (int i=0;i<labels;i++) {
-//			for (Cluster cluster : this.agent.getClustersByLabel(i)) {
-//				this.graphics.setColor(this.assignColor(i,cluster.getVector().getActivation()));
-//				int x = (int) (cluster.getVector().getX()*this.blocksize);
-//				int y = (int) (cluster.getVector().getY()*this.blocksize);
-//				this.graphics.drawRect(x, y, this.blocksize, this.blocksize);
-//			}
-//		}
-//		int contexts = this.agent.getContextNum();
-//		for (int i=0;i<contexts;i++) {
-//			for (Cluster cluster : this.agent.getClustersByContext(i)) {
-//				this.graphics.setColor(this.assignColor(i, cluster.getVector().getActivation()));
-//				int x = (int) (cluster.getVector().getX()*this.blocksize);
-//				int y = (int) (cluster.getVector().getY()*this.blocksize);
-//				this.graphics.drawString(Integer.toString(cluster.getMeaning()), x, y);
-//			}
-//		}
-//		int labels = this.agent.getLabelNum();
-//		for (int i=0;i<labels;i++) {
-//			for (Cluster cluster : this.agent.getClustersByLabel(i)) {
-//				this.graphics.setColor(this.assignColor(i, cluster.getVector().getActivation()));
-//				int x = (int) (cluster.getVector().getX()*this.blocksize);
-//				int y = (int) (cluster.getVector().getY()*this.blocksize);
-//				this.graphics.drawString(Integer.toString(cluster.getMeaning()), x, y);
-//			}
-//		}
 		int meanings = this.agent.getMeaningNum();
 		for (int i=0;i<meanings;i++) {
 			for (Cluster cluster : this.agent.getClustersByMeaning(i)) {
 				this.graphics.setColor(this.assignColor(i%11, cluster.getVector().getActivation()));
 				int x = (int) (cluster.getVector().getX()*this.blocksize);
 				int y = (int) (cluster.getVector().getY()*this.blocksize);
-//				this.graphics.drawString(this.contextLabels[cluster.getContext()]+this.labelLabels[cluster.getLabel()], x, y);
 				this.graphics.drawString(this.wordToString(cluster.getContext(), cluster.getLabel()), x, y);
 			}
 		}
@@ -96,7 +50,7 @@ public class ContextSimPanel extends MyPanel {
 		int step = this.sim.getStep();
 		if (step % 1000 == 0) {
 			System.out.println(step);
-			if (this.record && (step < 10000 || step % 10000 == 0)) {
+			if (this.recording && (step < 10000 || step % 10000 == 0)) {
 				this.saveIMG();
 			}
 		}
@@ -119,11 +73,10 @@ public class ContextSimPanel extends MyPanel {
 			first = context%10;
 		}
 
-		return this.contextLabels[first]+this.labelLabels[label]+this.contextLabels[second];
+		return Constants.CONTEXTLABELS[first]+Constants.LABELLABELS[label]+Constants.CONTEXTLABELS[second];
 	}
 	
 	private Color assignColor(int label, double activation) {
-//		int transparency = (int) (activation*255);
 		int transparency = (int) (((activation-this.stretch)/(1.0-this.stretch))*255);
 		switch(label) {
 		case 0:

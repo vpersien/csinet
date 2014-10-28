@@ -1,5 +1,14 @@
 package de.hhu.phil.persien.csinet;
 
+/*
+ * Agent.java
+ * 
+ * An agent is basically a container for clusters, i.e. exemplars. These are organized into three arrays of QuadTrees relating to
+ * labels, contexts and meanings, respectively, for quicker access. The QuadTree data structure allows for a faster search (log n
+ * on average) but insertion is rather slow (also log n on average). The list of vectors seems superfluous but proves convenient
+ * when all vectors have to be accessed in a row (e.g. when incrementing their age at the and of every simulation step).
+ */
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Hashtable;
@@ -11,15 +20,15 @@ import java.awt.Rectangle;
 
 public class Agent {
 	
-	private List<Agent> neighbors;
-	private Neighborhood neighborhood;
-	private List<Vector> vectors;
-	private QuadTree[] clustersByLabel;
-	private QuadTree[] clustersByContext;
-	private QuadTree[] clustersByMeaning;
-	private int labels;
-	private int contexts;
-	private int meanings;
+	private List<Agent> neighbors;			// List of neighbors
+	private Neighborhood neighborhood;		// The agent's neighborhood network
+	private List<Vector> vectors;			// List of all vectors
+	private QuadTree[] clustersByLabel;		// One QuadTree per label
+	private QuadTree[] clustersByContext;	// One QuadTree per context
+	private QuadTree[] clustersByMeaning;	// One QuadTree per meaning
+	private int labels;						// number of labels
+	private int contexts;					// number of contexts
+	private int meanings;					// number of meanings
 	
 	
 	public Agent(Neighborhood neighborhood) {
@@ -124,6 +133,7 @@ public class Agent {
 		this.vectors.add(vector);
 	}
 	
+	// Removes all vectors and clusters that are older than <maxtime>
 	public void tidyUp(int maxtime) {
 		for (int i=0;i<this.vectors.size();i++) {
 			if (this.vectors.get(i).getTime() > maxtime) this.vectors.remove(i);

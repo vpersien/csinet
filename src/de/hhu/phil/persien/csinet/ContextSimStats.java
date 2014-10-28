@@ -7,15 +7,12 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-public class ContextSimStats {
+public class ContextSimStats extends AbstractStats {
 
-	private AbstractSim sim;
-	private Agent agent;
-	
 	public ContextSimStats(AbstractSim sim) {
-		this.sim = sim;
-		this.agent = this.sim.getNeighborhood().getAgent(0);
+		super(sim);
 	}
+	
 	
 	private class ClusterXComparator implements Comparator<Cluster> {
 		@Override
@@ -32,10 +29,6 @@ public class ContextSimStats {
 	}
 	
 	
-	public void init() {
-		
-	}
-	
 	public void update() {
 		String str;
 		
@@ -44,62 +37,19 @@ public class ContextSimStats {
 		this.appendToFile("data/errorrates.csv", str);
 		
 		str = this.getInitString();
-		str += this.arrayToString(this.getQuartiles(agent));
+		str += this.arrayToString(this.getQuartiles(this.agent));
 		this.appendToFile("data/quantiles.csv", str);
 		
 		str = this.getInitString();
-		str += this.arrayToString(this.getMeanCoordinates(agent.getClustersByLabel()));
+		str += this.arrayToString(this.getMeanCoordinates(this.agent.getClustersByLabel()));
 		this.appendToFile("data/mean_labels.csv", str);
 		
 		str = this.getInitString();
-		str += this.arrayToString(this.getMeanCoordinates(agent.getClusterByMeaning()));
+		str += this.arrayToString(this.getMeanCoordinates(this.agent.getClusterByMeaning()));
 		this.appendToFile("data/mean_meanings.csv", str);
 	}
 	
-	private String arrayToString(double[] arr) {
-		String str = Arrays.toString(arr);
-		str = this.prepareArrayString(str);
-		return str;
-	}
-	
-	private String prepareArrayString(String str) {
-		String out = str.replaceAll("\\[|\\]|,", "");
-		out = out.replaceAll("\\s", "\t");
-		return out;
-	}
-	
-	private void appendToFile(String filename, String string) {
-		Writer writer = null;
-		try {
-			writer = new FileWriter(filename,true);
-			writer.write(string);
-			writer.append("\n");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		finally {
-			try {
-				writer.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-	
-	private String getInitString() {
-		return String.format("%s\t",this.sim.getStep());
-	}
-	
-	private double[] getQuantities(Agent agent) {
-		int labels = agent.getClustersByLabel().length;
-		double[] out = new double[labels];
-		
-		for (int i=0;i<labels;i++) {
-			out[i] = agent.getClustersByLabel(i).flatten().size();
-		}
-		return out;		
-	}
-	
+
 	private double[] getMeanCoordinates(QuadTree[] set) {
 		int size = set.length;
 		double[] out = new double[2*size];

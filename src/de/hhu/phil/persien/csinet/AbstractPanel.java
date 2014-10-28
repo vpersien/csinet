@@ -7,13 +7,14 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 
-public class MyPanel extends JPanel {
+public class AbstractPanel extends JPanel {
 	protected int width = 480;
 	protected int height = 320;
 	protected BufferedImage buffer;
 	protected Graphics graphics;
+	protected boolean recording = false;
 	
-	public MyPanel(int width, int height) {
+	public AbstractPanel(int width, int height) {
 		super();
 		this.width = width;
 		this.height = height;
@@ -21,7 +22,7 @@ public class MyPanel extends JPanel {
 		
 	}
 	
-	public MyPanel() {
+	public AbstractPanel() {
 		this(480,320);
 	}
 	
@@ -32,6 +33,7 @@ public class MyPanel extends JPanel {
 	public BufferedImage getBuffer() { return this.buffer; }
 	public int getWidth() { return this.width; }
 	public int getHeight() { return this.height; }
+	public boolean isRecording() { return this.recording; }
 	
 	/*
 	 * Setters
@@ -39,6 +41,7 @@ public class MyPanel extends JPanel {
 	
 	public void setWidth(int width) { this.width = width; }
 	public void setHeight(int height) { this.height = height; }
+	public void setRecording(boolean recording) { this.recording = recording; }
 	
 	/*
 	 * 

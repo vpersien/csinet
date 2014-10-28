@@ -5,55 +5,67 @@ import java.util.Date;
 public class Main {
 
 	public static void main(String[] args) {
-//		ISimulation sim;
+		/*
+		 * Choose simulation to be run
+		 */
+//		String activeSim = "first"; 
+		String activeSim = "context";
+		
+		/*
+		 * Do you want to take screenshots?
+		 */
+		boolean recording = true;
+		
+		
+		/*
+		 * Initialization of the simulation, its panel (graphical output), and statistics. 
+		 */
 		AbstractSim sim;
-		sim = new ContextSim();
-//		sim = new FirstSim();
+		AbstractPanel panel;
+		AbstractStats stats;
 		
+		if (activeSim.equals("first")) {
+			sim = new FirstSim();
+			sim.init();
+			panel = new FirstSimPanel(sim);
+			stats = new FirstSimStats(sim);
+		}
+		else {
+			sim = new ContextSim();
+			sim.init();
+			panel = new ContextSimPanel(sim);
+			stats = new ContextSimStats(sim);
+		}
 		
-		sim.init();
+		panel.setRecording(recording);
 		
-		MyPanel panel;
-		panel = new ContextSimPanel(sim);
-//		panel = new FirstSimPanel(sim);
 		MyWindow window = new MyWindow(panel);
 		window.setVisible(true);
 		
-		ContextSimStats contextSimStats = new ContextSimStats(sim);
-//		FirstSimStats firstSimStats = new FirstSimStats(sim);
-		
-		Date date = new Date();
 		long startTime;
-		long timeDiff;
-		long delay = 1000/25;
 		startTime = System.currentTimeMillis();
 		
+		/*
+		 * Main loop
+		 */
 		while (true) {
-			
+			/*
+			 * Update the simulation itself
+			 */
 			sim.update();
 			
-//			if (sim.getStep() % 1000 == 0) contextSimStats.update();
-//			if (sim.getStep() % 1000 == 0) firstSimStats.update();
+			/*
+			 * Record statistics every 1000 steps
+			 */
+			if (sim.getStep() % 1000 == 0) stats.update();
 			
+			/*
+			 * Output to screen every 40ms (approx.) or when the current step equals 1000
+			 */
 			if (System.currentTimeMillis()-startTime > 40 || sim.getStep() % 1000 == 0) {
 				window.update();
 				startTime = System.currentTimeMillis();
 			}
-//			if (sim.getStep() % 100 == 0) window.update();
-			
-//			timeDiff = System.currentTimeMillis()-startTime;
-//			if (timeDiff-delay > 0) {
-//				window.update();
-//				startTime = System.currentTimeMillis();
-//			}
-			
-			
-//			try {
-//				if (50-timeDiff>0)	Thread.sleep(50-timeDiff);
-//			}
-//			catch (InterruptedException e) {
-//				e.printStackTrace();
-//			}
 		}
 
 	}
