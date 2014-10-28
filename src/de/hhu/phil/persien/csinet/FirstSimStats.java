@@ -14,6 +14,7 @@ public class FirstSimStats extends AbstractStats {
 	
 	
 	public void update() {
+		if (!this.recording) return;
 		String str;
 		
 		str = this.getInitString();

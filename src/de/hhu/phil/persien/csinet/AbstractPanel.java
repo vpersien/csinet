@@ -12,7 +12,7 @@ public class AbstractPanel extends JPanel {
 	protected int height = 320;
 	protected BufferedImage buffer;
 	protected Graphics graphics;
-	protected boolean recording = false;
+	protected boolean recording = Constants.TAKESCREENSHOTS;
 	
 	public AbstractPanel(int width, int height) {
 		super();

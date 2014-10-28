@@ -30,8 +30,8 @@ public class ContextSim extends AbstractSim {
 	private double[] right = new double[Constants.MEANINGS_NUM];
 	private double[] wrong = new double[Constants.MEANINGS_NUM];
 
-	private final double[] initPosX = {49.0,89.0};
-	private final double[] initPosY = {49.0,89.0};
+	private final double[] initPosX = Constants.INITPOSX;
+	private final double[] initPosY = Constants.INITPOSY;
 	
 	private int[] contextByMeaning;
 	
@@ -49,11 +49,23 @@ public class ContextSim extends AbstractSim {
 	private void initTypes() {
 		this.contextByMeaning = new int[Constants.MEANINGS_NUM];
 		
-		// TODO: Make probility distributions selectable in the Constants class
-//		this.meaningprobs = this.getWeightedUniformDistribution(Constants.MEANINGS_NUM);
-		this.meaningprobs = this.getTwoLabelCrossZipf(Constants.MEANINGS_NUM, 0);
-//		this.meaningprobs = this.getDualZipf(Constants.MEANINGS_NUM);
-//		this.meaningprobs = this.getMultiZipf(Constants.MEANINGS_NUM, Constants.LABELS_NUM);
+		switch (Constants.DISTRIBUTION) {
+		case "weighteduniform":
+			this.meaningprobs = this.getWeightedUniformDistribution(Constants.MEANINGS_NUM);
+			break;
+		case "crosszipf":
+			this.meaningprobs = this.getTwoLabelCrossZipf(Constants.MEANINGS_NUM, 0);
+			break;
+		case "dualzipf":
+			this.meaningprobs = this.getDualZipf(Constants.MEANINGS_NUM);
+			break;
+		case "multizipf":
+			this.meaningprobs = this.getMultiZipf(Constants.MEANINGS_NUM, Constants.LABELS_NUM);
+			break;
+		case "uniform":
+		default:
+			this.meaningprobs = this.getUniformDistribution(Constants.MEANINGS_NUM);
+		}
 		
 		System.out.println(Arrays.toString(this.meaningprobs));
 		

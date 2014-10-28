@@ -8,6 +8,7 @@ import java.util.Arrays;
 public abstract class AbstractStats {
 	protected AbstractSim sim;
 	protected Agent agent;
+	protected boolean recording = Constants.RECORDSTATISTICS;
 	
 	public AbstractStats(AbstractSim sim) {
 		this.sim = sim;

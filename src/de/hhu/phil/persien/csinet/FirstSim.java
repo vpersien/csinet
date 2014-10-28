@@ -27,11 +27,11 @@ import java.util.Random;
 
 public class FirstSim extends AbstractSim {
 	// (Approx. mean) initial x and y coords for the members of each label
-	private final double[] initPosX = { 10.0, 90.0, 10.0, 90.0, 49.0 };
-	private final double[] initPosY = { 10.0, 10.0, 55.0, 55.0, 90.0 };
+	private final double[] initPosX = Constants.INITPOSX;
+	private final double[] initPosY = Constants.INITPOSY;
 
 	// Probability distribution of the labels
-	private double[] labelprobs = { 0.2, 0.2, 0.2, 0.2, 0.2 };
+	private double[] labelprobs = Constants.LABELPROBS;
 	private Prob labelCDF;
 
 	public FirstSim() {
@@ -127,10 +127,18 @@ public class FirstSim extends AbstractSim {
 		} else
 			labelhyp = label;
 
+		
+		// Check if requirements are met w.r.t. the chosen categorization regime.
+		boolean addable = false;
+		switch (Constants.REGIME) {
+		case "competitionwithdiscards":
+			addable = labelhyp > -1 && labelhyp == label;
+		case "purecompetition":
+		default:
+			addable = labelhyp > -1;
+		}
 		// Add exemplar based on the current categorization regime
-		// TODO: Make regime selectable in the Constants class
-		if (labelhyp > -1 && labelhyp == label) { // Competition with Discards
-			// if (labelhyp > -1) { // Pure Competition
+		if (addable) {
 			// Save certainty of the label assignment
 			production.setCertainty(probs[labelhyp]);
 			// Decide whether the exemplar is to be added to the hearer's
