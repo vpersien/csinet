@@ -124,6 +124,7 @@ public class FirstSim extends AbstractSim {
 		// hypothesis will equal the category label it originally stemmed from.
 		if (rnd.nextDouble() > Constants.SUCCESS) {
 			labelhyp = this.hypFromProbs(probs);
+//			labelhyp = this.hypFromProbsMajority(probs);
 		} else
 			labelhyp = label;
 
@@ -133,6 +134,7 @@ public class FirstSim extends AbstractSim {
 		switch (Constants.REGIME) {
 		case "competitionwithdiscards":
 			addable = labelhyp > -1 && labelhyp == label;
+			break;
 		case "purecompetition":
 		default:
 			addable = labelhyp > -1;
@@ -145,7 +147,8 @@ public class FirstSim extends AbstractSim {
 			// exemplar space
 			// based on its certainty (plus 0.4 to weaken its influence
 			// somewhat)
-			if (rnd.nextDouble() < production.getCertainty() + 0.4) {
+//			if (rnd.nextDouble() < production.getCertainty() + 0.4) {
+			if (true) {
 				hearer.addExemplar(production, labelhyp, 0, 0);
 			}
 		}

@@ -8,8 +8,8 @@ public class Main {
 		/*
 		 * Choose simulation to be run
 		 */
-//		String activeSim = "first"; 
-		String activeSim = "context";
+		String activeSim = "first"; 
+//		String activeSim = "context";
 		
 		/*
 		 * Do you want to take screenshots?

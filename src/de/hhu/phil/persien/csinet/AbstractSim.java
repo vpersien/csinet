@@ -121,6 +121,18 @@ public abstract class AbstractSim {
 		return -1;
 	}
 	
+	protected int hypFromProbsMajority(double[] probs) {
+		int currentIndex = -1;
+		double currentValue = -1.0;
+		for (int i=0;i<probs.length;i++) {
+			if (probs[i] > currentValue) {
+				currentValue = probs[i];
+				currentIndex = i;
+			}
+		}
+		return currentIndex;
+	}
+	
 	// Calls scoresToProbs and hypFromProbs.
 	protected int evalProb(QuadTree[] map, Vector vector, int label,
 			int context, int meaning) {
@@ -129,7 +141,13 @@ public abstract class AbstractSim {
 				int hyp = this.hypFromProbs(probs);		
 				
 				return hyp;
-			}
+	}
+	
+	protected int evalProbMajority(QuadTree[] map, Vector vector, int label, int context, int meaning) {
+		double[] probs = this.scoresToProbs(map, vector, label, context, meaning);
+		int hyp = this.hypFromProbsMajority(probs);
+		return hyp;
+	}
 
 	// Relocates a given vector by an amount of <LENITION> towards a target position defined by <TARGET_X> and
 	// <TARGET_Y>
